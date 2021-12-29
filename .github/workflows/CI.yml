@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+      - uses: Swatinem/rust-cache@v1
+
+      - name: test
+        run: cargo test --verbose
+
+      - name: build
+        run: cargo build --release --verbose
+
+      # build and push to docker hub
+      - uses: actions/checkout@v2
+      - name: Docker Login
+        env:
+          DOCKER_USER: ${{secrets.DOCKER_USER}}
+          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+        run: |
+          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+      - name: Build the Docker image
+        run: docker build -t ${{secrets.DOCKER_USER}}/paste-bin:latest .
+      - name: Docker Push
+        run: docker push ${{secrets.DOCKER_USER}}/paste-bin:latest
+      - name: Docker Logout
+        run: docker logout

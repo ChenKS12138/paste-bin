@@ -1,5 +1,3 @@
-use syntect::parsing::SyntaxSet;
-
 #[macro_use]
 extern crate lazy_static;
 
