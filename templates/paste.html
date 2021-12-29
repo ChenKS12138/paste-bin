@@ -1,0 +1,27 @@
+{% extends "layout.html" %} {% block header %}
+<style>
+  @import url("/theme/Solarized (light)") (prefers-color-scheme: light);
+  @import url("/theme/Solarized (dark)") (prefers-color-scheme: dark);
+  .code {
+    overflow-y: scroll;
+    padding: 1rem 0.5rem;
+  }
+</style>
+{% endblock %} {% block content %}
+<h4>Paste from {{ poster }}</h4>
+<h5 class="grey-text text-darken-2"><span id="time"></span></h5>
+<div class="row">
+  <div class="col s4">
+    <span class="grey-text text-darken-1">Syntax highlighting: </span>
+    <span>{{ lang }}</span>
+  </div>
+</div>
+<div class="row">
+  <div class="col s12">
+    <pre class="code">{{ html|safe }}</pre>
+  </div>
+</div>
+<script>
+  $("#time").text(new Date("{{ time }}"));
+</script>
+{% endblock %}
