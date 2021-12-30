@@ -1,0 +1,8 @@
+**/**
+
+!src/
+!templates/
+!test/
+!public/
+!Cargo.lock
+!Cargo.toml
