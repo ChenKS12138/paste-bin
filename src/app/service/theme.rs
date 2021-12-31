@@ -4,7 +4,7 @@ use syntect::{
     html::{css_for_theme_with_class_style, ClassStyle},
 };
 
-#[get("/theme/{theme}")]
+#[get("/theme/{theme}.css")]
 async fn index(web::Path(theme): web::Path<String>) -> impl Responder {
     let ts = ThemeSet::load_defaults();
     if let Some(theme) = &ts.themes.get(&theme) {
