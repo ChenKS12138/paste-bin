@@ -2,7 +2,7 @@
 FROM rust:1.57-alpine as builder
 COPY . /app
 WORKDIR /app
-RUN --mount=type=cache,id=apk,sharing=shared,target=/var/cache/apk \
+RUN --mount=type=cache,id=apk,sharing=shared,mode=0777,target=/var/cache/apk\
     apk update && apk add \
     git \
     make \
@@ -12,10 +12,10 @@ RUN --mount=type=cache,id=apk,sharing=shared,target=/var/cache/apk \
     zlib-dev \
     python3 \
     ldc
-RUN --mount=type=cache,id=cargo,sharing=shared,target=~/.cargo \
-    --mount=type=cache,id=cargo-target,sharing=shared,target=./target \
+RUN --mount=type=cache,id=cargo,sharing=shared,mode=0777,target=~/.cargo \
+    --mount=type=cache,id=cargo-target,sharing=shared,mode=0777,target=./target \
     cargo build --release
-RUN --mount=type=cache,id=cargo-target,sharing=shared,target=./target \
+RUN --mount=type=cache,id=cargo-target,sharing=shared,mode=0777,target=./target \
     cp /app/target/release/paste-bin /paste-bin
 
 
