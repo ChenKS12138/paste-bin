@@ -10,6 +10,7 @@ pub struct Index<'a> {
 #[template(path = "paste.html")]
 pub struct Paste<'a> {
     pub html: &'a str,
+    pub plain: &'a str,
     pub poster: &'a str,
     pub lang: &'a str,
     pub time: &'a str,

@@ -27,6 +27,7 @@ async fn query(
     if let Ok(paste_value) = paste_dao.query(&key) {
         let paste = template::Paste {
             html: &paste_value.html,
+            plain: &paste_value.plain,
             poster: &paste_value.poster,
             lang: &paste_value.lang,
             time: &paste_value.time.to_rfc2822(),
