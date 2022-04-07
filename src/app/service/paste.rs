@@ -12,6 +12,7 @@ use syntect::parsing::SyntaxSet;
 
 use askama::Template;
 use base_62;
+use html_escape;
 use sha2::{Digest, Sha256};
 use syntect::util::LinesWithEndings;
 
@@ -62,7 +63,7 @@ async fn create(
     app_data: web::Data<state::AppState>,
 ) -> impl Responder {
     let html_content = match &form.lang {
-        Lang::PlainText => (&form).content.clone(),
+        Lang::PlainText => html_escape::encode_safe(&(&form).content).to_string(),
         _ => {
             let syntax_set = SyntaxSet::load_defaults_newlines();
             let paste_syntax = syntax_set

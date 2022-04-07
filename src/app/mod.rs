@@ -10,6 +10,8 @@ use std::sync::{Arc, Mutex};
 
 use actix_web::{web, App, HttpResponse, HttpServer};
 
+const FORM_LIMIT: usize = 100 * 1024 * 1024;
+
 #[actix_web::main]
 pub async fn run(bind: String, redis_client: redis::Client) -> std::io::Result<()> {
     let connection = redis_client.get_connection().unwrap();
@@ -19,6 +21,7 @@ pub async fn run(bind: String, redis_client: redis::Client) -> std::io::Result<(
     HttpServer::new(move || {
         App::new()
             .app_data(state.clone())
+            .app_data(web::FormConfig::default().limit(FORM_LIMIT))
             .service(service::index::index)
             .service(service::public::index)
             .service(service::paste::create)
